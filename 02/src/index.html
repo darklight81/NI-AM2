@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HW 2</title>
+    <script>
+        let lastState = 0;
+        function onClick(){
+            document.getElementById('btn').disabled = true;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://ipv4.download.thinkbroadband.com/100MB.zip', true);
+            setText('LOADING');
+            xhr.send();
+            setText('LOADED');
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 3 && lastState !== 3) {
+                    lastState = 3;
+                    setText('DOWNLOADING');
+                }
+                if (xhr.readyState === 4) {
+                    setText('DOWNLOADED');
+                }
+            }
+
+            xhr.onerror = xhr.ontimeout = xhr.onabort = () => {
+                setText('ERROR');
+            }
+        }
+
+        function setText(text){
+            document.getElementById('text').innerText = text;
+            console.log(text);
+        }
+    </script>
+</head>
+<body>
+
+<div style="text-align: center">
+    <button id="btn" onclick="onClick()">Start Downloading</button>
+    <div id="text"></div>
+</div>
+</body>
+</html>
