@@ -1,0 +1,12 @@
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+open
+Opened
+add
+Added
+add
+Added
+process
+Order processed with 2 items
+
