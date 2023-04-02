@@ -1,0 +1,41 @@
+sulovigo@pop-os:~/magister/sem2/am2/sulovigo/04/src$ docker pull redis
+Using default tag: latest
+latest: Pulling from library/redis
+f1f26f570256: Pull complete
+8a1809b0503d: Pull complete
+d792b14d05f9: Pull complete
+ad29eaf93bf6: Pull complete
+7cda84ccdb33: Pull complete
+95f837a5984d: Pull complete
+Digest: sha256:7b83a0167532d4320a87246a815a134e19e31504d85e8e55f0bb5bb9edf70448
+Status: Downloaded newer image for redis:latest
+docker.io/library/redis:latest
+sulovigo@pop-os:~/magister/sem2/am2/sulovigo/04/src$ docker run --name my-redis-server -d redis
+d9fb45897d7c70cae8db4bbededdfb2385965a92d894612c344ce1784a2fa912
+sulovigo@pop-os:~/magister/sem2/am2/sulovigo/04/src$ docker run -it --link my-redis-server:redis --rm redis redis-cli -h redis -p 6379
+redis:6379> set John "Thakurova 9, 160 00, Prague"
+OK
+redis:6379>
+sulovigo@pop-os:~/magister/sem2/am2/sulovigo/04/src$ docker build -t my-node-server .
+[+] Building 1.4s (8/8) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                                                                                                                 0.0s
+ => => transferring dockerfile: 165B                                                                                                                                                                                                                                 0.0s
+ => [internal] load .dockerignore                                                                                                                                                                                                                                    0.0s
+ => => transferring context: 2B                                                                                                                                                                                                                                      0.0s
+ => [internal] load metadata for docker.io/library/node:latest                                                                                                                                                                                                       0.8s
+ => [1/3] FROM docker.io/library/node:latest@sha256:1fab548e95c779df229e4b50d8d20e222597bda15aeece508098c5ba7723302e                                                                                                                                                 0.0s
+ => [internal] load build context                                                                                                                                                                                                                                    0.1s
+ => => transferring context: 3.18MB                                                                                                                                                                                                                                  0.1s
+ => CACHED [2/3] WORKDIR /app                                                                                                                                                                                                                                        0.0s
+ => [3/3] COPY . /app                                                                                                                                                                                                                                                0.1s
+ => exporting to image                                                                                                                                                                                                                                               0.2s
+ => => exporting layers                                                                                                                                                                                                                                              0.1s
+ => => writing image sha256:e33e2b990e12cfbaf531630b919bf01453051df2ad980e3d89be7ec77ea09792                                                                                                                                                                         0.0s
+ => => naming to docker.io/library/my-node-server
+sulovigo@pop-os:~/magister/sem2/am2/sulovigo/04/src$ docker run -it --link my-redis-server:redis -p 8080:8080 my-node-server
+Server listening on port 8080
+
+sulovigo@pop-os:~/magister/sem2/am2/sulovigo/04/src$ curl http://localhost:8080/person/John/address
+Thakurova 9, 160 00, Prague
+
+
